@@ -6,7 +6,6 @@ lang_name=$(cat ./amd_asm/manifest)
 old_time=$(date +%s%N | cut -b1-13)
 echo Compiling $lang_name
 as ./amd_asm/amd_asm.asm -o ./amd_asm.o
-ld ./amd_asm.o -o ./amd_asm/amd_asm
 new_time=$(date +%s%N | cut -b1-13)
 ms=$(expr $new_time - $old_time)
 echo Took $ms ms
@@ -14,17 +13,20 @@ time_arr[$idx]=$ms
 name_arr[$idx]=$lang_name
 idx=$(expr $idx + 1)
 
+ld ./amd_asm.o -o ./amd_asm/amd_asm
+
 lang_name=$(cat ./arm_asm/manifest)
 old_time=$(date +%s%N | cut -b1-13)
 echo Compiling $lang_name
 arm-none-eabi-as ./arm_asm/arm_asm.asm -o ./arm_asm.o
-arm-none-eabi-ld ./arm_asm.o -o ./arm_asm/arm_asm
 new_time=$(date +%s%N | cut -b1-13)
 ms=$(expr $new_time - $old_time)
 echo Took $ms ms
 time_arr[$idx]=$ms
 name_arr[$idx]=$lang_name
 idx=$(expr $idx + 1)
+
+arm-none-eabi-ld ./arm_asm.o -o ./arm_asm/arm_asm
 
 lang_name=$(cat ./c/manifest)
 old_time=$(date +%s%N | cut -b1-13)
